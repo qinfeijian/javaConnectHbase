@@ -49,6 +49,14 @@ public static <T> T setProperty(T beanObj, Map<String, Object> map);
 
 public static Map<String, String> getProperty(Object beanObj);
 
+说明:根据表名，行名，列族，实体类插入或更新一条数据
+
+public <T> void insterDataByTableNameAndColumnFamilyAndBean(String tableName, 
+  String rowKey, String columnFamily,	T objectBean);
+
+根据表名，行名，实体类，把查到的HBASE数据映射到实体类中并返回
+
+public <T> void getDataByTableNameAndRowKeyAndBean(String tableName, String rowKey, T objectBean);
   
   
 ## ObjectAndByte工具类

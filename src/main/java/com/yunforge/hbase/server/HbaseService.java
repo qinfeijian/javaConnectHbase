@@ -77,4 +77,29 @@ public interface HbaseService {
 	 */
 	public List<SocTagInfo> selectByFilter(String tablename, List<String> arr);
 	
+	/**
+	 * 
+	 * 作者:覃飞剑 日期:2018年5月30日
+	 * 
+	 * @param tableName
+	 * @param rowKey
+	 * @param columnFamily
+	 * @param objectBean
+	 *            返回:void 说明:根据表名，行名，列族，实体类插入或更新一条数据
+	 */
+	public <T> void insterDataByTableNameAndColumnFamilyAndBean(String tableName, String rowKey, String columnFamily,
+			T objectBean);
+	
+	/**
+	 * 
+	 * 作者:覃飞剑 日期:2018年5月30日
+	 * 
+	 * @param <T>
+	 * @param tableName
+	 * @param rowKey
+	 * @param objectBean
+	 * @return 返回:T 说明:根据表名，行名，实体类，把查到的HBASE数据映射到实体类中并返回
+	 */
+	public <T> void getDataByTableNameAndRowKeyAndBean(String tableName, String rowKey, T objectBean);
+	
 }

@@ -12,7 +12,6 @@ public class HbaseTemplateConfig {
 		 HbaseTemplate hbaseTemplate = new HbaseTemplate();  
 	       org.apache.hadoop.conf.Configuration conf = HBaseConfiguration.create();  
 	       conf.set("hbase.zookeeper.quorum", "dn1.yfbd.com");  
-	       conf.set("hbase.zookeeper.port", "2181");  
 	       conf.set("hbase.zookeeper.property.clientPort", "2181");  
 	       conf.set("zookeeper.znode.parent", "/hbase-unsecure");
 	       hbaseTemplate.setConfiguration(conf);  

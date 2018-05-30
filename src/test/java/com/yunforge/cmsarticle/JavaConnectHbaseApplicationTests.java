@@ -59,11 +59,11 @@ public class JavaConnectHbaseApplicationTests {
 		/**
 		 * 根据开始与结束行获取表数据
 		 */
-//		 List<SocTagInfo> find = hbaseService.find("table1", null, null);
-//		 find.forEach(data -> {
-//        	Student result = MapConvertBeanUtil.converDataToBean(data,  new Student());
-//        	System.out.println(gson.toJson(result));
-//		 });
+		 List<SocTagInfo> find = hbaseService.find("table1", null, null);
+		 find.forEach(data -> {
+        	Student result = MapConvertBeanUtil.converDataToBean(data,  new Student());
+        	System.out.println(gson.toJson(result));
+		 });
 		
 		
 		
@@ -82,77 +82,35 @@ public class JavaConnectHbaseApplicationTests {
 		/**
 		 * 插入一条数据
 		 */
-//		stu.setChinese(new BigDecimal(90));
-//		stu.setMath(new BigDecimal(80));
+//		stu.setChinese(new BigDecimal(100));
+//		stu.setMath(new BigDecimal(30));
 //		stu.setGender("女");
-//		stu.setName("孙尚香");
-//		stu.set数学("80分");
-//		stu.set语文("90分");
+//		stu.setName("赵飞燕");
+//		stu.set数学("30分");
+//		stu.set语文("100分");
 //		
 //		String tableName = "table1";
 //		String columnFamily = "cf1";
 //		String rowKey = tableName + ":" + columnFamily + "(" + Date.from(Instant.now()) + ")";
 //		System.out.println(rowKey);
 //		
-//		insterDataByTableNameAndColumnFamilyAndBean(tableName, columnFamily, stu);
+//		hbaseService.insterDataByTableNameAndColumnFamilyAndBean(tableName, rowKey, columnFamily, stu);
 		
 		
 		/**
 		 * 条件查询
 		 */
-		List<String> arr=new ArrayList<String>();  
-        arr.add("cf1,gender,man");  
-        arr.add("cf2,math,91"); 
-        List<SocTagInfo> selectByFilter = hbaseService.selectByFilter("table1", arr);
-        selectByFilter.forEach(data -> {
-        	Student result = MapConvertBeanUtil.converDataToBean(data,  new Student());
-        	System.out.println(gson.toJson(result));
-        });
+//		List<String> arr=new ArrayList<String>();  
+//        arr.add("cf1,gender,女");  
+//        arr.add("cf1,math,30"); 
+//        List<SocTagInfo> selectByFilter = hbaseService.selectByFilter("table1", arr);
+//        selectByFilter.forEach(data -> {
+//        	Student result = MapConvertBeanUtil.converDataToBean(data,  new Student());
+//        	System.out.println(gson.toJson(result));
+//        });
 		
 	}
 	
-	/**
-	 * 
-	 * 作者:覃飞剑
-	 * 日期:2018年5月30日
-	 * @param tableName
-	 * @param rowKey
-	 * @param columnFamily
-	 * @param objectBean
-	 * 返回:void
-	 * 说明:根据表名，行名，列族，实体类插入或更新一条数据
-	 */
-	public void insterDataByTableNameAndColumnFamilyAndBean(String tableName, String rowKey, String columnFamily, Object objectBean) {
-		Map<String, String> propertys = MapConvertBeanUtil.getProperty(objectBean);
-		propertys.entrySet().forEach(entry -> {
-			String property = entry.getKey();
-			String value = entry.getValue();
-			hbaseService.put(tableName, rowKey, columnFamily, property, value);
-		});
-	}
-	
-	/**
-	 * 
-	 * 作者:覃飞剑
-	 * 日期:2018年5月30日
-	 * @param <T>
-	 * @param tableName
-	 * @param rowKey
-	 * @param objectBean
-	 * @return
-	 * 返回:T
-	 * 说明:根据表名，行名，实体类，把查到的HBASE数据映射到实体类中并返回
-	 */
-	public <T> void getDataByTableNameAndRowKeyAndBean(String tableName, String rowKey, T objectBean) {
-		final Map<String, Object> map = new HashMap<String, Object>();
-		SocTagInfo socTagInfo = hbaseService.get(tableName, rowKey);
-		List<DetailCellData> detail = socTagInfo.getDetail();
-
-		detail.forEach(data -> {
-			map.put(data.getQualifier(), data.getValue());
-		});
-		MapConvertBeanUtil.setProperty(objectBean, map);
-	}
 	
 	
 	

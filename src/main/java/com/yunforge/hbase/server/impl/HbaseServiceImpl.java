@@ -2,7 +2,9 @@ package com.yunforge.hbase.server.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import com.yunforge.hbase.model.DetailCellData;
 import com.yunforge.hbase.model.SocTagInfo;
 import com.yunforge.hbase.server.HbaseService;
+import com.yunforge.hbase.util.MapConvertBeanUtil;
 
 @Service("hbaseService")
 public class HbaseServiceImpl implements HbaseService {
@@ -188,6 +191,48 @@ public class HbaseServiceImpl implements HbaseService {
 			}
 		}
 		return info;
+	}
+	
+	
+	/**
+	 * 
+	 * 作者:覃飞剑 日期:2018年5月30日
+	 * 
+	 * @param tableName
+	 * @param rowKey
+	 * @param columnFamily
+	 * @param objectBean
+	 *            返回:void 说明:根据表名，行名，列族，实体类插入或更新一条数据
+	 */
+	public <T> void insterDataByTableNameAndColumnFamilyAndBean(String tableName, String rowKey, String columnFamily,
+			T objectBean) {
+		Map<String, String> propertys = MapConvertBeanUtil.getProperty(objectBean);
+		propertys.entrySet().forEach(entry -> {
+			String property = entry.getKey();
+			String value = entry.getValue();
+			put(tableName, rowKey, columnFamily, property, value);
+		});
+	}
+
+	/**
+	 * 
+	 * 作者:覃飞剑 日期:2018年5月30日
+	 * 
+	 * @param <T>
+	 * @param tableName
+	 * @param rowKey
+	 * @param objectBean
+	 * @return 返回:T 说明:根据表名，行名，实体类，把查到的HBASE数据映射到实体类中并返回
+	 */
+	public <T> void getDataByTableNameAndRowKeyAndBean(String tableName, String rowKey, T objectBean) {
+		final Map<String, Object> map = new HashMap<String, Object>();
+		SocTagInfo socTagInfo = get(tableName, rowKey);
+		List<DetailCellData> detail = socTagInfo.getDetail();
+
+		detail.forEach(data -> {
+			map.put(data.getQualifier(), data.getValue());
+		});
+		MapConvertBeanUtil.setProperty(objectBean, map);
 	}
 
 }

@@ -32,22 +32,27 @@ conf.set("zookeeper.znode.parent", "/hbase-unsecure");
 这里面它使用了HbaseTemplate实现了一些逻辑,具体逻辑请看接口注解
 
 ## MapConvertBeanUtil为工具类它里面定义了一些工具方法
+
 如:
 
 说明:将HBASE的一行数据转换为给定的实体类数据并返回
+
 public static <T> T converDataToBean(SocTagInfo socTagInfo, T bean);
   
 
 说明:传入map数据给给定的实体类设置对应的值
+
 public static <T> T setProperty(T beanObj, Map<String, Object> map);
   
 
 说明:把实体类中所有属性映射成Map<String, String>
+
 public static Map<String, String> getProperty(Object beanObj);
 
   
   
 ## ObjectAndByte工具类
+
 两个方法为Object和二进制数据之间的转换提供实现
 
   

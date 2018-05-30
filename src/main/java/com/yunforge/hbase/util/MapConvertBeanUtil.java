@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MapConvertBeanUtil {
@@ -64,4 +65,32 @@ public class MapConvertBeanUtil {
 		}
 	}
 
+	public static Map<String, String> getProperty(Object beanObj) {
+		Map<String, String> result = new HashMap<String, String>();
+		try {
+			Field[] fields = beanObj.getClass().getDeclaredFields();// 获得属性
+			for (int i = 0; i < fields.length; i++) {
+				Field field = fields[i];
+				// 此处应该判断beanObj,property不为null
+				String name = field.getName();
+				PropertyDescriptor pd = new PropertyDescriptor(name, beanObj.getClass());
+				Method setMethod = pd.getReadMethod();
+				if (setMethod != null) {
+					Object value = setMethod.invoke(beanObj);
+					result.put(name, value.toString());
+				}
+			}
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (IntrospectionException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

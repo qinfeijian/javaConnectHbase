@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -45,19 +46,33 @@ public class JavaConnectHbaseApplicationTests {
 		Gson gson = new Gson();
 		Student stu = new Student();
 //
-//		 hbaseService.put("table1", "003", "cf1", "name", "张三");
-//		 hbaseService.put("table1", "003", "cf1", "gender", "男");
-//		 hbaseService.put("table1", "003", "cf2", "chinese", "100");
-//		 hbaseService.put("table1", "003", "cf2", "math", "99");
 
+		/**
+		 * 根据表名，rowkey，列族，列名获取值
+		 */
 		// String string = hbaseService.get("table1", "001", "cf1", "name");
 		// System.out.println(string);
 
-		// List<SocTagInfo> find = hbaseService.find("table1", "0", "1");
-
-		getDataByTableNameAndRowKeyAndBean("table1", "table1:cf1(Wed May 30 09:36:36 CST 2018)", stu);
 		
-		System.out.println(gson.toJson(stu));
+		
+		
+		/**
+		 * 根据开始与结束行获取表数据
+		 */
+//		 List<SocTagInfo> find = hbaseService.find("table1", null, null);
+//		 find.forEach(data -> {
+//        	Student result = MapConvertBeanUtil.converDataToBean(data,  new Student());
+//        	System.out.println(gson.toJson(result));
+//		 });
+		
+		
+		
+		/**
+		 * 根据表名，rowkey查询一条数据并映射到给定实体类
+		 */
+//		getDataByTableNameAndRowKeyAndBean("table1", "table1:cf1(Wed May 30 09:36:36 CST 2018)", stu);
+//		
+//		System.out.println(gson.toJson(stu));
 		
 		
 		
@@ -80,7 +95,20 @@ public class JavaConnectHbaseApplicationTests {
 //		System.out.println(rowKey);
 //		
 //		insterDataByTableNameAndColumnFamilyAndBean(tableName, columnFamily, stu);
-
+		
+		
+		/**
+		 * 条件查询
+		 */
+		List<String> arr=new ArrayList<String>();  
+        arr.add("cf1,gender,man");  
+        arr.add("cf2,math,91"); 
+        List<SocTagInfo> selectByFilter = hbaseService.selectByFilter("table1", arr);
+        selectByFilter.forEach(data -> {
+        	Student result = MapConvertBeanUtil.converDataToBean(data,  new Student());
+        	System.out.println(gson.toJson(result));
+        });
+		
 	}
 	
 	/**
@@ -125,5 +153,7 @@ public class JavaConnectHbaseApplicationTests {
 		});
 		MapConvertBeanUtil.setProperty(objectBean, map);
 	}
+	
+	
 	
 }

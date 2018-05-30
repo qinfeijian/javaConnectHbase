@@ -1,5 +1,6 @@
 package com.yunforge.hbase.server;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.yunforge.hbase.model.SocTagInfo;
@@ -59,5 +60,21 @@ public interface HbaseService {
 	 */
 	public void put(final String tableName, final String rowKey,  
             final String familyName, final String column, final String value);
+	
+	/**
+	 * 
+	 * 作者:覃飞剑
+	 * 日期:2018年5月30日
+	 * @param tablename
+	 * @param arr
+	 * @return
+	 * @throws IOException
+	 * 返回:List<SocTagInfo>
+	 * 说明:查询出符合条件的数据
+	 * 		arr的格式如下：
+	 * 列族，列名，值
+	 * 条件：查询 course列族中art列值为97 ，且 course列族中math列值为100的行  
+	 */
+	public List<SocTagInfo> selectByFilter(String tablename, List<String> arr);
 	
 }

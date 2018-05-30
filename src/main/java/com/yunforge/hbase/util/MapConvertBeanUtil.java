@@ -8,16 +8,47 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MapConvertBeanUtil {
+import com.yunforge.hbase.model.DetailCellData;
+import com.yunforge.hbase.model.SocTagInfo;
 
-	public static void setProperty(Object beanObj, Map<String, Object> map) {
+public class MapConvertBeanUtil {
+	
+	/**
+	 * 
+	 * 作者:覃飞剑
+	 * 日期:2018年5月30日
+	 * @param socTagInfo
+	 * @param bean
+	 * @return
+	 * 返回:T
+	 * 说明:降HBASE的一行数据转换为给定的实体类数据并返回
+	 */
+	public static <T> T converDataToBean(SocTagInfo socTagInfo, T bean) {
+		final Map<String, Object> map = new HashMap<String, Object>();
+		List<DetailCellData> detail = socTagInfo.getDetail();
+		detail.forEach(data -> {
+			map.put(data.getQualifier(), data.getValue());
+		});
+		setProperty(bean, map);
+		return bean;
+	}
+	/**
+	 * 
+	 * 作者:覃飞剑
+	 * 日期:2018年5月30日
+	 * @param beanObj
+	 * @param map
+	 * 返回:void
+	 * 说明:传入map数据给给定的实体类设置对应的值
+	 */
+	public static <T> T setProperty(T beanObj, Map<String, Object> map) {
 		for (String key : map.keySet()) {
 			Object value = map.get(key);
 			try {
 				Field[] fields = beanObj.getClass().getDeclaredFields();// 获得属性
-				Class clazz = beanObj.getClass();
 				for (int i = 0; i < fields.length; i++) {
 					Field field = fields[i];
 					// 此处应该判断beanObj,property不为null
@@ -26,7 +57,6 @@ public class MapConvertBeanUtil {
 					Method setMethod = pd.getWriteMethod();
 					if (setMethod != null && name.equals(key)) {
 						String type = field.getType().toString();
-						System.out.println(beanObj + "的字段是:" + name + "，参数类型是：" + type + "，set的值是： " + value);
 						// 这里注意实体类中set方法中的参数类型，如果不是String类型则进行相对应的转换
 						if (type.equals("class java.lang.String")) {
 							setMethod.invoke(beanObj, value);// invoke是执行set方法
@@ -63,8 +93,18 @@ public class MapConvertBeanUtil {
 				e.printStackTrace();
 			}
 		}
+		return beanObj;
 	}
 
+	/**
+	 * 
+	 * 作者:覃飞剑
+	 * 日期:2018年5月30日
+	 * @param beanObj
+	 * @return
+	 * 返回:Map<String,String>
+	 * 说明:把实体类中所有属性映射成Map<String, String>
+	 */
 	public static Map<String, String> getProperty(Object beanObj) {
 		Map<String, String> result = new HashMap<String, String>();
 		try {

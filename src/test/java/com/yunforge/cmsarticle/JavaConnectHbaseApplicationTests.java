@@ -33,6 +33,10 @@ public class JavaConnectHbaseApplicationTests {
 	@Test
 	public void contextLoads() {
 		
+		hbaseService.with(Student.class);
+		
+		listByStartAndEndRowNum();
+		
 		
 	}
 	
@@ -47,7 +51,7 @@ public class JavaConnectHbaseApplicationTests {
 	 * 根据开始与结束行获取表数据
 	 */
 	public void listByStartAndEndRowNum() {
-		List<Student> find = hbaseService.find(tableName, null, null, Student.class);
+		List<Student> find = hbaseService.find(tableName, null, null);
 		find.forEach(data ->{
 			System.out.println(gson.toJson(data));
 		});
@@ -79,7 +83,7 @@ public class JavaConnectHbaseApplicationTests {
 		List<String> arr=new ArrayList<String>();  
         arr.add("cf1,gender,女");  
         arr.add("cf1,math,30"); 
-        List<Student> selectByFilter = hbaseService.selectByFilter(tableName, arr, Student.class);
+        List<Student> selectByFilter = hbaseService.selectByFilter(tableName, arr);
         selectByFilter.forEach(data -> {
         	System.out.println(gson.toJson(data));
         });

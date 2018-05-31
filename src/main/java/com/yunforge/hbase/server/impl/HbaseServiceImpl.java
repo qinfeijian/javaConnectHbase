@@ -36,6 +36,12 @@ public class HbaseServiceImpl implements HbaseService {
 	
 	@Resource(name = "htemplate")
 	private HbaseTemplate htemplate;
+	
+	private Class clz;
+	
+	public void with(Class clazz) {
+	    clz = clazz;
+	};
 
 	// 获取表中指定行，列簇，列的值
 	/**
@@ -80,11 +86,11 @@ public class HbaseServiceImpl implements HbaseService {
 	 * @param rowName
 	 * @return 返回:T 说明:通过行名称获取一条数据
 	 */
-	public <T> T get(String tableName, String rowName, Class<?> clz) {
+	public <T> T get(String tableName, String rowName) {
 		return htemplate.get(tableName, rowName, new RowMapper<T>() {
 			public T mapRow(Result result, int rowNum) throws Exception {
 				List<Cell> ceList = result.listCells();
-				return getBeanInfo(ceList, clz);
+				return getBeanInfo(ceList);
 			}
 		});
 	}
@@ -116,7 +122,7 @@ public class HbaseServiceImpl implements HbaseService {
 	 *             返回:List<T> 说明:查询出符合条件的数据 arr的格式如下： 列族，列名，值 条件：查询
 	 *             course列族中art列值为97 ，且 course列族中math列值为100的行
 	 */
-	public <T> List<T> selectByFilter(String tablename, List<String> arr, Class<?> clz) {
+	public <T> List<T> selectByFilter(String tablename, List<String> arr) {
 		FilterList filterList = new FilterList();
 		Scan s1 = new Scan();
 		for (String v : arr) { // 各个条件之间是“与”的关系
@@ -133,7 +139,7 @@ public class HbaseServiceImpl implements HbaseService {
 
 			public T mapRow(Result result, int rowNum) throws Exception {
 				List<Cell> ceList = result.listCells();
-				return getBeanInfo(ceList, clz);
+				return getBeanInfo(ceList);
 			}
 		});
 	}
@@ -148,11 +154,11 @@ public class HbaseServiceImpl implements HbaseService {
 	 * 返回:T
 	 * 说明:把查询到的数据封装到实体类中
 	 */
-	public <T> T getBeanInfo(List<Cell> ceList, Class<?> clz) {
+	public <T> T getBeanInfo(List<Cell> ceList) {
 		System.out.println(ceList.toString());
 		T beanObj;
 		try {
-			beanObj = (T)clz.newInstance();
+			beanObj = (T)this.clz.newInstance();
 			if (ceList != null && ceList.size() > 0) {
 				for (Cell cell : ceList) {
 					// 获取值
@@ -225,7 +231,7 @@ public class HbaseServiceImpl implements HbaseService {
 
 
 	@Override
-	public <T> List<T> find(String tableName, String startRow, String stopRow, Class<?> clz) {
+	public <T> List<T> find(String tableName, String startRow, String stopRow) {
 		// 使用Scan可以实现过滤的功能
 				Scan scan = new Scan();
 				if (startRow == null) {
@@ -241,7 +247,7 @@ public class HbaseServiceImpl implements HbaseService {
 					@Override
 					public T mapRow(Result result, int rowNum) throws Exception {
 						List<Cell> ceList = result.listCells();
-						return getBeanInfo(ceList, clz);
+						return getBeanInfo(ceList);
 					}
 				});
 		
@@ -258,14 +264,14 @@ public class HbaseServiceImpl implements HbaseService {
 	 * 说明:@see com.yunforge.hbase.server.HbaseService#findByTableNameAndRowKey(java.lang.String, java.lang.String, java.lang.Class)
 	 */
 	@Override
-	public <T> T findByTableNameAndRowKey(String tableName, String rowKey, Class<?> clz) {
+	public <T> T findByTableNameAndRowKey(String tableName, String rowKey) {
 		return htemplate.get(tableName, rowKey, new RowMapper<T>() {
 
 			@Override
 			public T mapRow(Result result, int rowNum) throws Exception {
 				// TODO Auto-generated method stub
 				List<Cell> ceList = result.listCells();
-				return getBeanInfo(ceList, clz);
+				return getBeanInfo(ceList);
 			}
 			
 		});

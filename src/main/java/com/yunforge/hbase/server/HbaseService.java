@@ -5,6 +5,15 @@ import java.util.List;
 
 
 public interface HbaseService {
+	/**
+	 * 
+	 * 作者:覃飞剑
+	 * 日期:2018年5月31日
+	 * @param clazz
+	 * 返回:void
+	 * 说明:设置泛型类型
+	 */
+	public void with(Class clazz);
 
 	/**
 	 * 
@@ -31,7 +40,7 @@ public interface HbaseService {
 	 * 返回:T
 	 * 说明:根据行名称获取一条数据
 	 */
-	public <T> T get(String tableName, String rowName, Class<?> clz);
+	public <T> T get(String tableName, String rowName);
 	
 	/**
 	 * 
@@ -62,7 +71,7 @@ public interface HbaseService {
 	 * 列族，列名，值
 	 * 条件：查询 course列族中art列值为97 ，且 course列族中math列值为100的行  
 	 */
-	public <T> List<T> selectByFilter(String tablename, List<String> arr, Class<?> clz);
+	public <T> List<T> selectByFilter(String tablename, List<String> arr);
 	
 	/**
 	 * 
@@ -89,7 +98,7 @@ public interface HbaseService {
 	 * 返回:List<Class<?>>
 	 * 说明:浏览表中某些行的信息，例子中指定的起始行和结束行
 	 */
-	public <T> List<T> find(String tableName, String startRow, String stopRow, Class<?> clz);
+	public <T> List<T> find(String tableName, String startRow, String stopRow);
 	
 	/**
 	 * 
@@ -101,7 +110,7 @@ public interface HbaseService {
 	 * 返回:T
 	 * 说明:根据表名，列名查询一条记录
 	 */
-	public <T> T findByTableNameAndRowKey(String tableName, String rowKey, Class<?> clz);
+	public <T> T findByTableNameAndRowKey(String tableName, String rowKey);
 	
 	
 }

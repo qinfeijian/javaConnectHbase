@@ -8,33 +8,11 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.yunforge.hbase.model.DetailCellData;
-import com.yunforge.hbase.model.SocTagInfo;
 
 public class MapConvertBeanUtil {
 	
-	/**
-	 * 
-	 * 作者:覃飞剑
-	 * 日期:2018年5月30日
-	 * @param socTagInfo
-	 * @param bean
-	 * @return
-	 * 返回:T
-	 * 说明:降HBASE的一行数据转换为给定的实体类数据并返回
-	 */
-	public static <T> T converDataToBean(SocTagInfo socTagInfo, T bean) {
-		final Map<String, Object> map = new HashMap<String, Object>();
-		List<DetailCellData> detail = socTagInfo.getDetail();
-		detail.forEach(data -> {
-			map.put(data.getQualifier(), data.getValue());
-		});
-		setProperty(bean, map);
-		return bean;
-	}
 	/**
 	 * 
 	 * 作者:覃飞剑

@@ -3,7 +3,6 @@ package com.yunforge.hbase.server;
 import java.io.IOException;
 import java.util.List;
 
-import com.yunforge.hbase.model.SocTagInfo;
 
 public interface HbaseService {
 
@@ -21,18 +20,6 @@ public interface HbaseService {
 	 */
 	public String get(String tableName, String rowName, String familyName, String qualifier);
 	
-	/**
-	 * 
-	 * 作者:覃飞剑
-	 * 日期:2018年5月29日
-	 * @param tableName
-	 * @param startRow
-	 * @param stopRow
-	 * @return
-	 * 返回:List<SocTagInfo>
-	 * 说明:根据开始与结束行获取指定表的数据
-	 */
-	public List<SocTagInfo> find(String tableName, String startRow, String stopRow);
 	
 	/**
 	 * 
@@ -44,7 +31,7 @@ public interface HbaseService {
 	 * 返回:SocTagInfo
 	 * 说明:根据行名称获取一条数据
 	 */
-	public SocTagInfo get(String tableName, String rowName);
+	public <T> T get(String tableName, String rowName, Class<?> clz);
 	
 	/**
 	 * 
@@ -75,7 +62,7 @@ public interface HbaseService {
 	 * 列族，列名，值
 	 * 条件：查询 course列族中art列值为97 ，且 course列族中math列值为100的行  
 	 */
-	public List<SocTagInfo> selectByFilter(String tablename, List<String> arr);
+	public <T> List<T> selectByFilter(String tablename, List<String> arr, Class<?> clz);
 	
 	/**
 	 * 
@@ -92,14 +79,29 @@ public interface HbaseService {
 	
 	/**
 	 * 
-	 * 作者:覃飞剑 日期:2018年5月30日
+	 * 作者:覃飞剑
+	 * 日期:2018年5月31日
+	 * @param tableName
+	 * @param startRow
+	 * @param stopRow
+	 * @param clz
+	 * @return
+	 * 返回:List<Class<?>>
+	 * 说明:浏览表中某些行的信息，例子中指定的起始行和结束行
+	 */
+	public <T> List<T> find(String tableName, String startRow, String stopRow, Class<?> clz);
+	
+	/**
 	 * 
-	 * @param <T>
+	 * 作者:覃飞剑
+	 * 日期:2018年5月31日
 	 * @param tableName
 	 * @param rowKey
-	 * @param objectBean
-	 * @return 返回:T 说明:根据表名，行名，实体类，把查到的HBASE数据映射到实体类中并返回
+	 * @return
+	 * 返回:T
+	 * 说明:根据表名，列名查询一条记录
 	 */
-	public <T> void getDataByTableNameAndRowKeyAndBean(String tableName, String rowKey, T objectBean);
+	public <T> T findByTableNameAndRowKey(String tableName, String rowKey, Class<?> clz);
+	
 	
 }

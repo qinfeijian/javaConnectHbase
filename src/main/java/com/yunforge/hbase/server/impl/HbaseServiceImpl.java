@@ -78,7 +78,7 @@ public class HbaseServiceImpl implements HbaseService {
 	 * 
 	 * @param tableName
 	 * @param rowName
-	 * @return 返回:SocTagInfo 说明:通过行名称获取一条数据
+	 * @return 返回:T 说明:通过行名称获取一条数据
 	 */
 	public <T> T get(String tableName, String rowName, Class<?> clz) {
 		return htemplate.get(tableName, rowName, new RowMapper<T>() {
@@ -113,7 +113,7 @@ public class HbaseServiceImpl implements HbaseService {
 	 * @param arr
 	 * @return
 	 * @throws IOException
-	 *             返回:List<SocTagInfo> 说明:查询出符合条件的数据 arr的格式如下： 列族，列名，值 条件：查询
+	 *             返回:List<T> 说明:查询出符合条件的数据 arr的格式如下： 列族，列名，值 条件：查询
 	 *             course列族中art列值为97 ，且 course列族中math列值为100的行
 	 */
 	public <T> List<T> selectByFilter(String tablename, List<String> arr, Class<?> clz) {

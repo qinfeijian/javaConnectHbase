@@ -28,7 +28,7 @@ public interface HbaseService {
 	 * @param tableName
 	 * @param rowName
 	 * @return
-	 * 返回:SocTagInfo
+	 * 返回:T
 	 * 说明:根据行名称获取一条数据
 	 */
 	public <T> T get(String tableName, String rowName, Class<?> clz);
@@ -56,7 +56,7 @@ public interface HbaseService {
 	 * @param arr
 	 * @return
 	 * @throws IOException
-	 * 返回:List<SocTagInfo>
+	 * 返回:List<T>
 	 * 说明:查询出符合条件的数据
 	 * 		arr的格式如下：
 	 * 列族，列名，值
